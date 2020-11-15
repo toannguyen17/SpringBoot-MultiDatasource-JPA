@@ -44,13 +44,7 @@ public class SecondDatasourceConfig {
 			.build();
 	}
 
-	@Bean
-	public PlatformTransactionManager secondTransactionManager(@Qualifier("second-emf") LocalContainerEntityManagerFactoryBean emf)
-	{
-		return new JpaTransactionManager(Objects.requireNonNull(emf.getObject()));
-	}
-
-	@Bean("second-emf")
+	@Bean("secondEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean secondEntityManagerFactory(@Qualifier("datasource-second") DataSource dataSource)
 	{
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
@@ -64,5 +58,11 @@ public class SecondDatasourceConfig {
 		factory.setJpaProperties(jpaProperties);
 
 		return factory;
+	}
+
+	@Bean
+	public PlatformTransactionManager secondTransactionManager(@Qualifier("secondEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf)
+	{
+		return new JpaTransactionManager(Objects.requireNonNull(emf.getObject()));
 	}
 }

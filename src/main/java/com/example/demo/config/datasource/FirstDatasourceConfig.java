@@ -44,13 +44,7 @@ public class FirstDatasourceConfig {
 			.build();
 	}
 
-	@Bean
-	public PlatformTransactionManager firstTransactionManager(@Qualifier("first-emf") LocalContainerEntityManagerFactoryBean emf)
-	{
-		return new JpaTransactionManager(Objects.requireNonNull(emf.getObject()));
-	}
-
-	@Bean("first-emf")
+	@Bean("firstEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean firstEntityManagerFactory(@Qualifier("datasource-first") DataSource dataSource)
 	{
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
@@ -64,5 +58,11 @@ public class FirstDatasourceConfig {
 		factory.setJpaProperties(jpaProperties);
 
 		return factory;
+	}
+
+	@Bean
+	public PlatformTransactionManager firstTransactionManager(@Qualifier("firstEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf)
+	{
+		return new JpaTransactionManager(Objects.requireNonNull(emf.getObject()));
 	}
 }
