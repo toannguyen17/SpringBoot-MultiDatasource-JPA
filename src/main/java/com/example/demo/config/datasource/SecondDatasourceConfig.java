@@ -28,14 +28,14 @@ public class SecondDatasourceConfig {
 	@Autowired
 	private Environment env;
 
-	@Bean("datasource-second-p")
+	@Bean
 	@ConfigurationProperties(prefix="app.datasource.second")
 	public DataSourceProperties secondDataSourceProperties() {
 		return new DataSourceProperties();
 	}
 
-	@Bean("datasource-second")
-	public DataSource secondDataSource(@Qualifier("datasource-second-p") DataSourceProperties dataSourceProperties) {
+	@Bean
+	public DataSource secondDataSource(@Qualifier("secondDataSourceProperties") DataSourceProperties dataSourceProperties) {
 		return DataSourceBuilder.create()
 			.driverClassName(dataSourceProperties.getDriverClassName())
 			.url(dataSourceProperties.getUrl())
@@ -44,8 +44,8 @@ public class SecondDatasourceConfig {
 			.build();
 	}
 
-	@Bean("secondEntityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean secondEntityManagerFactory(@Qualifier("datasource-second") DataSource dataSource)
+	@Bean
+	public LocalContainerEntityManagerFactoryBean secondEntityManagerFactory(@Qualifier("secondDataSource") DataSource dataSource)
 	{
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(dataSource);

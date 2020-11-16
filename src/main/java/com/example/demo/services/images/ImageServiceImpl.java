@@ -4,12 +4,10 @@ import com.example.demo.model.datasource2.Image;
 import com.example.demo.repositories.datasource2.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@Transactional(transactionManager = "secondTransactionManager")
 public class ImageServiceImpl implements IImagesService {
 	@Autowired
 	ImageRepository imageRepository;

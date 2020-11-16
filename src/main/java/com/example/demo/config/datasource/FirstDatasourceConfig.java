@@ -28,14 +28,14 @@ public class FirstDatasourceConfig {
 	@Autowired
 	private Environment env;
 
-	@Bean("datasource-first-p")
+	@Bean
 	@ConfigurationProperties(prefix="app.datasource.first")
 	public DataSourceProperties firstDataSourceProperties() {
 		return new DataSourceProperties();
 	}
 
-	@Bean("datasource-first")
-	public DataSource firstDataSource(@Qualifier("datasource-first-p") DataSourceProperties dataSourceProperties) {
+	@Bean
+	public DataSource firstDataSource(@Qualifier("firstDataSourceProperties") DataSourceProperties dataSourceProperties) {
 		return DataSourceBuilder.create()
 			.driverClassName(dataSourceProperties.getDriverClassName())
 			.url(dataSourceProperties.getUrl())
@@ -44,8 +44,8 @@ public class FirstDatasourceConfig {
 			.build();
 	}
 
-	@Bean("firstEntityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean firstEntityManagerFactory(@Qualifier("datasource-first") DataSource dataSource)
+	@Bean
+	public LocalContainerEntityManagerFactoryBean firstEntityManagerFactory(@Qualifier("firstDataSource") DataSource dataSource)
 	{
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(dataSource);
